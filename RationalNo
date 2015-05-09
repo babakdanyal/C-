@@ -1,1 +1,127 @@
-This program reads the Rational No from a file and perform operations add subtract multiply deelte.
+//This program reads the Rational No from a file and perform operations add subtract multiply deelte.
+#include<iostream.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<fstream.h>
+#include<string.h>
+//n stands for nenominator and 1 and 2 represents first and second no respectively
+//d stands for denominator
+//nTemp stands for temprory nenominator
+//dTemp stands for temprory denominator
+
+class RationalNo
+{
+  public:
+
+  static void add(long n1, long d1,long n2, long d2, long & n, long & d)
+  {
+       n= (n1*d2) + (n2*d1);
+       d= d1*d2;
+  }
+  static void subtract(long n1, long d1,long n2, long d2, long & n, long & d)
+  {
+       n=(n1*d2) - (n2*d1);
+       d=d1*d2;
+  }
+
+  static void multiply(long n1, long d1,long n2, long d2, long & n, long & d)
+  {
+	n=n1*n2;
+	d=d1*d2;
+  }
+
+  static void divide(long n1, long d1,long n2, long d2, long & n, long & d)
+  {
+	n = n1*d2;
+	d = n2*d1;
+  }
+  static void pureForm(long nTemp,long dTemp,long & n,long & sideNo)
+  {
+      n = nTemp % dTemp;
+      sideNo = nTemp /	 dTemp;
+
+  }
+  static void simplifyFraction(long nTemp, long dTemp, long & n, long & d)
+  {
+   int i=2;
+     while(i<10)
+     {
+       if(nTemp % i == 0 && dTemp % i == 0)
+       {
+	nTemp= nTemp / i;
+	dTemp= dTemp / i;
+       }
+       else
+	i++;
+     }
+     n=nTemp;
+     d=dTemp;
+  }
+
+};
+
+void main()
+{
+	clrscr();
+	long n=0,d=0,s=0,i=0;
+	long array[10];
+	char cNum[10];
+	char * pch;
+
+	ifstream fileData("file.dat",ios::in);
+
+//	if()
+	{
+		while(fileData.good())
+		{
+		   fileData.getline(cNum,256,' ');
+		  // cout<<cNum<<endl;
+		   pch=strtok(cNum,"/");
+		      while(pch!=NULL)
+		      {
+			array[i]=atoi(pch);
+			i++;
+			pch=strtok(NULL,"/");
+		      }
+		}
+
+		cout<<"output : "<<endl;
+		RationalNo::add	(array[0],array[1],array[2],array[3],n,d);
+
+		RationalNo::pureForm(n,d,n,s);
+		RationalNo::simplifyFraction(n,d,n,d);
+		long n2,d2;
+
+		RationalNo::simplifyFraction(array[2],array[3],n2,d2);
+
+		cout<<array[0]<<"/"<<array[1]
+		<<" + ("<<n2<<") = ("<<s<<" "<<n<<"/"<<d<<")\n";
+
+		RationalNo::subtract(array[0],array[1],array[2],array[3],n,d);
+		RationalNo::pureForm(n,d,n,s);
+		RationalNo::simplifyFraction(n,d,n,d);
+		cout<<array[0]<<"/"<<array[1]
+		<<" - ("<<n2<<") = ("<<s<<" "<<n<<"/"<<d<<")\n";
+
+		RationalNo::multiply(array[0],array[1],array[2],array[3],n,d);
+		RationalNo::pureForm(n,d,n,s);
+		RationalNo::simplifyFraction(n,d,n,d);
+		cout<<array[0]<<"/"<<array[1]
+		<<" * ("<<array[2]<<") = ("<<s<<" "<<n<<"/"<<d<<")\n";
+		if(array[1]==0||array[2]==0)
+		{
+			RationalNo::divide(array[0],array[1],array[2],array[3],n,d);
+			RationalNo::pureForm(n,d,n,s);
+			RationalNo::simplifyFraction(n,d,n,d);
+			cout<<array[0]<<"/"<<array[1]
+			<<" / ("<<array[2]<<") = ("<<s<<" "<<n<<"/"<<d<<")\n";
+		}
+		else
+		cout<<"lnf"<<endl;
+	}
+  //	else
+	{
+    //		cout<<"Error opening file";
+	}
+	getch();
+}
